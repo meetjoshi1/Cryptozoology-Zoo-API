@@ -12,7 +12,6 @@ import java.util.Objects;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class Animal {
 
@@ -21,10 +20,21 @@ public class Animal {
     private Long id;
     private String name;
     private String type;
+    private boolean mood;
+
+    public Animal(){
+        this.mood = Boolean.FALSE;
+    }
 
     public Animal(String name, String type) {
         this.name = name;
         this.type = type;
+    }
+
+    public Animal(String name, String type, boolean mood) {
+        this.name = name;
+        this.type = type;
+        this.mood = mood;
     }
 
     @Override
@@ -40,5 +50,38 @@ public class Animal {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, type);
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public boolean isMood() {
+        return mood;
+    }
+
+    public void setMood(boolean mood) {
+        this.mood = mood;
     }
 }

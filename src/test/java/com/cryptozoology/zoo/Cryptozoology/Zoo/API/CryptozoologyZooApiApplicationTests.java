@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -64,5 +65,19 @@ class CryptozoologyZooApiApplicationTests {
 				.getResponse()
 				.getContentAsString();
 		assertThat(animalList).isEqualTo(expectedAnimalList);
+	}
+
+	@Test
+	public void  checkAndSetAnimalMood() throws Exception {
+		Animal animal1 = zooRepository.save(new Animal("Dog", "walking", Boolean.FALSE));
+		Animal animal2 = zooRepository.save(new Animal("Cat", "walking",Boolean.TRUE));
+
+		mockMVC.perform(MockMvcRequestBuilders.put("/updateMood/{id}" , animal1.getId()))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.mood").value(Boolean.TRUE));
+
+		mockMVC.perform(MockMvcRequestBuilders.put("/updateMood/" + animal2.getId()))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.mood").value(Boolean.TRUE));
 	}
 }

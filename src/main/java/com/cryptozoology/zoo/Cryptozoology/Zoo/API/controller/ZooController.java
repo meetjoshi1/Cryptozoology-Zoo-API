@@ -26,4 +26,10 @@ public class ZooController {
     public ResponseEntity<Animal> addAnimal(@RequestBody Animal animal){
         return new ResponseEntity<Animal>(zooService.addAnimal(animal), HttpStatus.CREATED);
     }
+
+    @PutMapping("/updateMood/{id}")
+    public ResponseEntity<Animal> setAnimalMood(@PathVariable Long id){
+        return new ResponseEntity<Animal>(zooService.setAnimalMood(id), HttpStatus.OK);
+
+    }
 }
