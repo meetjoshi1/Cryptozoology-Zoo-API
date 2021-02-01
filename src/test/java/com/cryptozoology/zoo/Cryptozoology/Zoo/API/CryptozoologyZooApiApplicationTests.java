@@ -3,6 +3,7 @@ package com.cryptozoology.zoo.Cryptozoology.Zoo.API;
 import com.cryptozoology.zoo.Cryptozoology.Zoo.API.model.Animal;
 import com.cryptozoology.zoo.Cryptozoology.Zoo.API.repository.ZooRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,6 +36,7 @@ class CryptozoologyZooApiApplicationTests {
 	@BeforeEach
 	void setUp() {
 		mapper = new ObjectMapper();
+		zooRepository.deleteAll();
 	}
 
 	@Test
@@ -47,6 +52,17 @@ class CryptozoologyZooApiApplicationTests {
 				.andExpect(jsonPath("$.type").value("walking"));
 	}
 
+	@Test
+	public void getAllAnimal() throws Exception {
+		zooRepository.save(new Animal("Dog", "walking"));
+		zooRepository.save(new Animal("Cat", "walking"));
 
-
+		String expectedAnimalList = mapper.writeValueAsString(zooRepository.findAll());
+		String animalList = mockMVC.perform(MockMvcRequestBuilders.get("/animalList"))
+				.andExpect(status().isOk())
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
+		assertThat(animalList).isEqualTo(expectedAnimalList);
+	}
 }

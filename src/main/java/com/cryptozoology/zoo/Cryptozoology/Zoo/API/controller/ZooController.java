@@ -4,10 +4,9 @@ import com.cryptozoology.zoo.Cryptozoology.Zoo.API.model.Animal;
 import com.cryptozoology.zoo.Cryptozoology.Zoo.API.service.ZooService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class ZooController {
@@ -16,6 +15,11 @@ public class ZooController {
 
     public ZooController(ZooService zooService) {
         this.zooService = zooService;
+    }
+
+    @GetMapping("/animalList")
+    public ResponseEntity<List<Animal>> getAllAnimals(){
+        return new ResponseEntity<List<Animal>>(zooService.getAllAnimals(), HttpStatus.OK);
     }
 
     @PostMapping("/animal")
