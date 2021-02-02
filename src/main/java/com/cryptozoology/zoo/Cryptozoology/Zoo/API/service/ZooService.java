@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ZooService {
@@ -26,12 +27,12 @@ public class ZooService {
     }
 
     public Animal setAnimalMood(Long id) {
-        for(Animal animal : zooRepository.findAll()){
-            if(animal.getId().equals(id)){
-                animal.setMood(Boolean.TRUE);
-                return animal;
-            }
-        }
-        return null;
+        Animal animal = zooRepository.findById(id).get();
+        animal.setMood(Boolean.TRUE);
+        return animal;
+    }
+
+    public List<Animal> searchAnimals(Boolean mood, String type) {
+        return zooRepository.serachAnimal(mood,type);
     }
 }

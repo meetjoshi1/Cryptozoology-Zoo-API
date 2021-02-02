@@ -32,4 +32,9 @@ public class ZooController {
         return new ResponseEntity<Animal>(zooService.setAnimalMood(id), HttpStatus.OK);
 
     }
+
+    @GetMapping("/animals/{mood}/{type}")
+    public ResponseEntity<List<Animal>> searchAnimals(@PathVariable Boolean mood, @PathVariable String type){
+        return new ResponseEntity<List<Animal>>(zooService.searchAnimals(mood,type), HttpStatus.OK);
+    }
 }
